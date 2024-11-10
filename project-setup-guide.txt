@@ -1,0 +1,14 @@
+1. Initialze turbo repo
+- npx create-turbo@latest
+
+2. Install any css library/tailwind css refer:-https://tailwindcss.com/docs/guides/nextjs
+
+3. Db setup - prisma
+- Create a new folder packages/db
+- npx init -y
+- npx tsc --init
+- Initialze prisma - npx prisma init
+- Create a avien instance at https://console.aiven.io/
+- create a user table i.e. model User
+- give the inital migration to get these changes reflected into the db - npx prisma migrate dev --name inital commit
+- npx prisma generate
