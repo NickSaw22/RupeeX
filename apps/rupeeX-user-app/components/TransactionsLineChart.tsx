@@ -6,7 +6,7 @@ import HighchartsReact from 'highcharts-react-official';
 
 type Transaction = {
   amount: number;
-  startTime: Date; // ISO date format
+  startTime: Date;
 };
 
 type LineChartProps = {
