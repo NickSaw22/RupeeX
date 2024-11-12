@@ -30,6 +30,8 @@
     "eslint": "^8.57.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "highcharts": "^11.4.8",
+    "highcharts-react-official": "^3.2.1"
   }
 }
