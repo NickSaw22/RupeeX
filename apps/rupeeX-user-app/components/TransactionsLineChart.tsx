@@ -16,7 +16,7 @@ type LineChartProps = {
 const TransactionsLineChart: React.FC<LineChartProps> = ({ data }) => {
   const chartData = data.map((transaction) => [
     new Date(transaction.startTime).getTime(),
-    transaction.amount,
+    transaction.amount/100,
   ]);
 
   const options = {

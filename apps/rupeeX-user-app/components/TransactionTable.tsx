@@ -7,8 +7,8 @@ type Transaction = {
   status?: string;
   timestamp?: Date;
   startTime?: Date;
-  toUser?: { name: string | null; email: string };
-  fromUser?: { name: string | null; email: string };
+  toUser?: { name: string | null; email: string | null};
+  fromUser?: { name: string | null; email: string | null };
 };
 
 type TransactionTableProps = {
@@ -37,7 +37,11 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ title, transactions
             <tr key={transaction.id} className="border-t">
               <td className="px-4 py-2">{transaction.amount}</td>
               {type === 'onRamp' && <td className="px-4 py-2">{transaction.provider}</td>}
-              {/* <td className="px-4 py-2">{new Date(transaction.startTime || transaction.timestamp).toLocaleString()}</td> */}
+              <td className="px-4 py-2">
+                {(transaction.startTime || transaction.timestamp) 
+                  ? new Date(transaction.startTime ?? transaction.timestamp!).toLocaleString()
+                  : 'N/A'}
+              </td>
               {type === 'sent' && <td className="px-4 py-2">{transaction.toUser?.name || transaction.toUser?.email}</td>}
               {type === 'received' && <td className="px-4 py-2">{transaction.fromUser?.name || transaction.fromUser?.email}</td>}
               {type === 'onRamp' && <td className="px-4 py-2">{transaction.status}</td>}

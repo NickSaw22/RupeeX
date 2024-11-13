@@ -8,17 +8,13 @@ export default async function Transactions() {
     <div className="w-full p-6 bg-white shadow rounded-lg">
       <h1 className="text-2xl font-bold mb-4">Transaction Data</h1>
 
-      {onRampTransactions ? (
-        <TransactionTable
+      <TransactionTable
         title="On-Ramp Transactions"
         transactions={onRampTransactions}
         type="onRamp"
-        />            ) : (
-                <p>Loading transactions...</p>
-            )}
-      
+      />
 
-      {/* <TransactionTable
+      <TransactionTable
         title="Sent p2p Transfers"
         transactions={sentTransfers}
         type="sent"
@@ -28,7 +24,7 @@ export default async function Transactions() {
         title="Received p2p Transfers"
         transactions={receivedTransfers}
         type="received"
-      /> */}
+      />
     </div>
   );
 }
