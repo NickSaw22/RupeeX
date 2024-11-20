@@ -33,7 +33,8 @@ model Merchant  {
   OnRampTransaction         OnRampTransaction[] 
   p2pSentTransfers          p2pTransfer[]           @relation(name: "FromMerchantRelation")
   p2pReceivedTransfers      p2pTransfer[]           @relation(name: "ToMerchantRelation")
-  scheduledTransfers        scheduledTransfer[]     @relation(name: "ToMerchantScheduledTransfersRelation")
+  scheduledTransfersToMerchant        scheduledTransfer[]     @relation(name: "ToMerchantScheduledTransfersRelation")
+  scheduledTransfersFromMerchant        scheduledTransfer[]     @relation(name: "FromMerchantScheduledTransfersRelation")
 }
 
 model OnRampTransaction {
@@ -81,14 +82,16 @@ model MerchantBalance {
 
 model scheduledTransfer {
   id             Int        @id @default(autoincrement())
-  fromUserId     Int
-  toMerchantId   Int       
+  fromUserId     Int?
+  toMerchantId   Int?
+  fromMerchantId Int?    
   amount         Int
   frequency      Frequency
   nextRun        DateTime
   status         TransferStatus
-  toMerchant     Merchant     @relation(name: "ToMerchantScheduledTransfersRelation", fields: [toMerchantId], references: [id])
-  fromUser       User          @relation(name: "FromUserScheduledTransfersRelation", fields: [fromUserId], references: [id])
+  toMerchant     Merchant?     @relation(name: "ToMerchantScheduledTransfersRelation", fields: [toMerchantId], references: [id])
+  fromMerchant     Merchant?     @relation(name: "FromMerchantScheduledTransfersRelation", fields: [fromMerchantId], references: [id])
+  fromUser       User?          @relation(name: "FromUserScheduledTransfersRelation", fields: [fromUserId], references: [id])
 }
 
 enum Frequency {
