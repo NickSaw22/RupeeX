@@ -6,7 +6,7 @@ const Sidebar = () => {
     { title: "Dashboard", href: "/dashboard", icon: <HomeIcon /> },
     { title: "Transactions", href: "/transactions", icon: <TransferIcon /> },
     { title: "Merchant Profile", href: "/profile", icon: <TransactionsIcon /> },
-    { title: "Scheduled Transfers", href: "/transfers", icon: <P2PTransferIcon /> },
+    { title: "Scheduled Transfers", href: "/scheduledTransfers", icon: <P2PTransferIcon /> },
     { title: "Security", href: "/security", icon:  <HomeIcon /> },
     { title: "Settings", href: "/settings", icon: <TransactionsIcon /> },
     { title: "Help & Support", href: "/support", icon: <P2PTransferIcon /> },
