@@ -1,43 +1,22 @@
 {
   "name": "jobs-app",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
-    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
-    "start": "node dist/index.js",
-    "dev": "npm run build && npm run start"
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "ts-node src/app.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "Scheduler jobs for handling scheduled transfers",
   "dependencies": {
     "@repo/db": "*",
-    "cron": "^2.2.0",
     "express": "^4.21.1",
-    "node-cron": "^3.0.3",
-    "node-schedule": "^2.1.1",
-    "pino": "^8.11.0",
-    "pino-pretty": "^13.0.0"
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^14.1.1",
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "@types/cron": "^1.7.3",
-    "@types/eslint": "^8.56.5",
     "@types/express": "^5.0.0",
     "@types/node": "^20.11.24",
     "@types/node-cron": "^3.0.11",
-    "@types/node-schedule": "^2.1.7",
-    "@types/react": "^18.2.61",
-    "@types/react-dom": "^18.2.19",
-    "esbuild": "^0.24.0",
-    "eslint": "^8.57.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.3"
-  },
-  "engines": {
-    "node": ">=16.0.0"
   }
 }
