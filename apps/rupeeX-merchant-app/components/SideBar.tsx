@@ -1,35 +1,74 @@
+"use client";
+
 import SidebarItem from "./SideBarItem";
 import Logo from "./Logo";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-const Sidebar = () => {
+interface SidebarProps {
+  className?: string;
+}
+
+const Sidebar = ({ className } : SidebarProps) => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (status === "unauthenticated" && pathname !== "/auth/signIn" && pathname !== "/auth/signUp") {
+      router.push("/auth/signIn");
+    }
+  }, [status, pathname, router]);
+
+
   const tabs = [
-    { title: "Dashboard", href: "/dashboard", icon: <HomeIcon /> },
-    { title: "Transactions", href: "/transactions", icon: <TransferIcon /> },
-    { title: "Merchant Profile", href: "/profile", icon: <TransactionsIcon /> },
+    { title: "Dashboard", href: "/merch-dashboard", icon: <HomeIcon /> },
+    { title: "Bank Transfer", href: "/bankTransfers", icon: <TransferIcon /> },
+    { title: "Merchant Profile", href: "/merch-profile", icon: <TransactionsIcon /> },
     { title: "Scheduled Transfers", href: "/scheduledTransfers", icon: <P2PTransferIcon /> },
-    { title: "Security", href: "/security", icon:  <HomeIcon /> },
-    { title: "Settings", href: "/settings", icon: <TransactionsIcon /> },
-    { title: "Help & Support", href: "/support", icon: <P2PTransferIcon /> },
+    { title: "Transers", href: "/merch-transactions", icon: <TransactionsIcon /> },
+    // { title: "Settings", href: "/settings", icon: <TransactionsIcon /> },
+    // { title: "Help & Support", href: "/support", icon: <P2PTransferIcon /> },
   ];
 
   return (
-    <aside className="bg-gray-800 text-white h-screen w-64 flex flex-col">
-      <div className="p-4">
-        <Logo />
+    <aside className={ className ? className :"fixed bg-gray-800  top-0 left-0  text-white h-screen w-64 flex flex-col justify-between"}>
+      <div>
+        <div className="p-4">
+          <Logo />
+        </div>
+        {session?.user && (
+          <nav className="flex-1 mt-4">
+            {tabs.map((tab) => (
+              <SidebarItem key={tab.title} title={tab.title} href={tab.href} icon={tab.icon} />
+            ))}
+          </nav>
+        )}
       </div>
-      <nav className="flex-1 mt-4">
-        {tabs.map((tab) => (
-          <SidebarItem key={tab.title} title={tab.title} href={tab.href} icon={tab.icon} />
-        ))}
-      </nav>
       <div className="p-4 border-t border-gray-700">
-        <button className="w-full bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">
-          Logout
-        </button>
+        {session?.user ? (
+          <>
+            <span className="hidden sm:inline">
+              Welcome, {session.user.name || "User"}
+            </span>
+            <button onClick={() => signOut()} className="w-full bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">
+              Logout
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={() => signIn()}
+            className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+          >
+            Login
+          </button>
+        )}
       </div>
     </aside>
   );
 };
+
 
  // Icons Fetched from https://heroicons.com/
  function HomeIcon() {

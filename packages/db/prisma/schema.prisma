@@ -44,8 +44,8 @@ model OnRampTransaction {
   provider  String
   amount    Int
   startTime DateTime
-  userId    Int
-  user      User         @relation(fields: [userId], references: [id])
+  userId    Int?
+  user      User?         @relation(fields: [userId], references: [id])
   merchantId Int?
   merchant Merchant?     @relation(fields: [merchantId], references: [id])
 }
@@ -54,10 +54,10 @@ model p2pTransfer {
   id                      Int          @id @default(autoincrement())
   amount                  Int
   timestamp               DateTime
-  fromUserId              Int
-  fromUser                User         @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])
-  toUserId                Int
-  toUser                  User         @relation(name: "ToUserRelation", fields: [toUserId], references: [id])
+  fromUserId              Int?
+  fromUser                User?         @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])
+  toUserId                Int?
+  toUser                  User?         @relation(name: "ToUserRelation", fields: [toUserId], references: [id])
   fromMerchantId          Int?
   fromMerchant            Merchant?    @relation(name: "FromMerchantRelation", fields: [fromMerchantId], references: [id])
   toMerchantId            Int?
