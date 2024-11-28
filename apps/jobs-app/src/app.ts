@@ -1,10 +1,10 @@
 import express from 'express';
 import { generateUserReport, generateMerchantReport } from './controllers/reportController';
 import { scheduleTransfer } from './controllers/transferController';
-import SchedulerService from './services/schedulerService';
+import TransferSchedulerService from './services/TransferSchedulerService';
 
 const app = express();
-const schedulerService = new SchedulerService();
+const transferSchedulerService = new TransferSchedulerService();
 
 app.use(express.json());
 
@@ -14,5 +14,5 @@ app.get('/generate-merchant-report/:merchantId', generateMerchantReport);
 
 app.listen(3004, () => {
   console.log('Server is running on port 3004');
-  schedulerService.startTransferScheduler();
+  transferSchedulerService.startTransferScheduler();
 });

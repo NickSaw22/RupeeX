@@ -1,54 +1,78 @@
 import db from '@repo/db/client';
-import { logger } from '../../utils/logger';
-import { calculateNextRun } from '../models/transferProcessor';
+type Frequency = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly';
 
-export const transferExecutor = async(transfer: any) => {
-    logger.info(`Starting execution for transfer ID: ${transfer.id}`);
+const calculateNextRun = (frequency: Frequency): Date => {
+    const now = new Date();
 
-    await db.$transaction(async (tx)=>{
-        //deduct from sender's balance
-        if(transfer.fromUserId){
-            const senderBalance = await tx.balance.findUnique({
-                where:{
-                    userId: Number(transfer.fromUserId)
-                }
-            });
+    switch (frequency) {
+        case 'Daily':
+            return new Date(now.setDate(now.getDate() + 1));
+        case 'Weekly':
+            return new Date(now.setDate(now.getDate() + 7));
+        case 'Monthly':
+            return new Date(now.setMonth(now.getMonth() + 1));
+        case 'Yearly':
+            return new Date(now.setFullYear(now.getFullYear() + 1));
+        default:
+            throw new Error(`Unknown frequency: ${frequency}`);
+    }
+};
 
-            if(!senderBalance || senderBalance.amount<transfer.amount){
-                logger.error(`Insufficient funds for user ID: ${transfer.fromUserId}`);
-                throw new Error(`Insufficient funds for user ID: ${transfer.fromUserId}`);
-            }
+const updateBalance = async (tx: any, userId: number, amount: number, isMerchant: boolean = false) => {
+    const balanceTable = isMerchant ? 'merchantBalance' : 'balance';
+    const balanceField = isMerchant ? 'merchantId' : 'userId';
 
-            await tx.balance.update({
-                where:{
-                    userId: Number(transfer.fromUserId)
-                },
-                data:{
-                    amount:{
-                        decrement: transfer.amount
-                    }
-                }
-            });
+    const balance = await tx[balanceTable].findUnique({
+        where: { [balanceField]: userId },
+    });
+
+    if (!balance || balance.amount < amount) {
+        throw new Error(`Insufficient funds for ${isMerchant ? 'merchant' : 'user'} ID: ${userId}`);
+    }
+
+    await tx[balanceTable].update({
+        where: { [balanceField]: userId },
+        data: { amount: { decrement: amount } },
+    });
+};
+
+const addBalance = async (tx: any, merchantId: number, amount: number) => {
+    await tx.merchantBalance.update({
+        where: { merchantId },
+        data: { amount: { increment: amount } },
+    });
+};
+
+
+export const transferExecutor = async (transfer: any) => {
+    console.log(`Starting execution for transfer ID: ${JSON.stringify(transfer)}`);
+
+    await db.$transaction(async (tx) => {
+        //deduct from sender's user balance
+        if (transfer.fromUserId) {
+            await updateBalance(tx, transfer.fromUserId, transfer.amount);
         }
 
-        //Add amount to reciever's balance
-        if(transfer.toMerchantId){
-            await tx.merchantBalance.update({
-                where:{ merchantId: Number(transfer.toMerchantId)},
-                data:{ amount:{increment:transfer.amount}}
-            });
+        //deduct from sender merchant's balance
+        if (transfer.fromMerchantId) {
+            await updateBalance(tx, transfer.fromMerchantId, transfer.amount, true);
+        }
+
+        //add to merchant balance
+        if (transfer.toMerchantId) {
+            await addBalance(tx, transfer.toMerchantId, transfer.amount);
         }
 
         //update scheduled transfer's next run date
         const nextRun = calculateNextRun(transfer.frequency);
 
         await tx.scheduledTransfer.update({
-            where:{ id: transfer.id},
-            data:{
+            where: { id: transfer.id },
+            data: {
                 nextRun: nextRun,
                 status: nextRun ? 'Active' : 'Completed',
             }
         });
     });
-    logger.info(`Transfer ID ${transfer.id} completed successfully`);
+    console.info(`Transfer ID ${transfer.id} completed successfully`);
 }

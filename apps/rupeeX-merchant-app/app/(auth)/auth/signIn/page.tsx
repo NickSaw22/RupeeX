@@ -19,7 +19,7 @@ export default function Signin() {
     });
 
     if (result?.ok) {
-      window.location.href = "/visiondashboard";
+      window.location.href = "/merch-dashboard";
     } else {
       alert("Login failed!");
     }

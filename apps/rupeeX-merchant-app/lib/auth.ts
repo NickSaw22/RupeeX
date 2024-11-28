@@ -49,7 +49,7 @@ export const authOptions = {
   },
   secret: process.env.NEXTAUTH_URL || "secret",
   pages:{
-    signIn:"/auth/sinIn",
-    signOut:"/auth/singout"
+    signIn:"/auth/signIn",
+    signOut:"/auth/signout"
   },
 }
