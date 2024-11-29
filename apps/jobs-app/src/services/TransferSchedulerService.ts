@@ -22,10 +22,9 @@ class TransferSchedulerService {
     );
   }
 
-  public startTransferScheduler() {
+  public async startTransferScheduler() {
     //cron.schedule('*/5 * * * *', () => this.processScheduledTransfers()); // Run every 5 minutes
     cron.schedule('*/30 * * * * *', () => this.processScheduledTransfers()); // Run every 0.5 minute
-
   }
 }
 
