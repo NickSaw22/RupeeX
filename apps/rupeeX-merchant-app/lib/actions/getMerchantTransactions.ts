@@ -73,6 +73,7 @@ export async function getMerchantTransactions() {
             },
         });
 
+        console.log("OnRamp Transaction: "+onRampTransactions+ " Sent Transfers: "+sentTransfers+ " Received Transfers: "+ receivedTransfers); 
         return {
             onRampTransactions,
             sentTransfers,

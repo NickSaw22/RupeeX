@@ -46,11 +46,9 @@ const MerchantForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // console.log(merchant);
-    // await updateMerchantUser(merchant);
     try {
       console.log(merchant);
-      await updateMerchantUser(merchant); // Assuming this is an async function that updates the merchant
+      await updateMerchantUser(merchant);
       alert("Merchant profile updated successfully!");
     } catch (error) {
       alert("An error occurred while updating the profile. Please try again.");
@@ -59,7 +57,7 @@ const MerchantForm: React.FC = () => {
   };  
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-900">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-200 to-blue-800">
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 space-y-6">
         {/* SVG Profile */}
         <div className="flex justify-center">

@@ -18,6 +18,42 @@ const calculateNextRun = (frequency: Frequency): Date => {
     }
 };
 
+const p2pTransfer = async (txn: any, transfer: any) => {
+    const { fromMerchantId, toMerchantId, fromUserId, amount } = transfer;
+    try{
+        console.log("From and To Id: " + JSON.stringify(transfer));
+
+        if (fromUserId) {
+            await txn.$executeRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(fromUserId)} FOR UPDATE`;
+            await updateBalance(txn, fromUserId, amount);
+        }
+
+        if (fromMerchantId) {
+            await txn.$executeRaw`SELECT * FROM "MerchantBalance" WHERE "merchantId" = ${Number(fromMerchantId)} FOR UPDATE`;
+            await updateBalance(txn, fromMerchantId, amount, true);
+        }
+
+        if (toMerchantId) {
+            await addBalance(txn, toMerchantId, amount);
+        }
+
+        console.log("P2P payload: ", JSON.stringify(transfer));
+
+        await txn.p2pTransfer.create({
+            data: {
+                fromUserId: fromUserId ? Number(fromUserId) : null,
+                fromMerchantId: fromMerchantId ? Number(fromMerchantId) : null,
+                toMerchantId: Number(toMerchantId),
+                amount: amount,
+                timestamp: new Date()
+            }
+        });
+    }catch (error) {
+        console.error("Error during p2pTransfer: ", error);
+        throw error;
+    }
+};
+
 const updateBalance = async (tx: any, userId: number, amount: number, isMerchant: boolean = false) => {
     const balanceTable = isMerchant ? 'merchantBalance' : 'balance';
     const balanceField = isMerchant ? 'merchantId' : 'userId';
@@ -43,27 +79,14 @@ const addBalance = async (tx: any, merchantId: number, amount: number) => {
     });
 };
 
-
 export const transferExecutor = async (transfer: any) => {
     console.log(`Starting execution for transfer ID: ${JSON.stringify(transfer)}`);
 
     await db.$transaction(async (tx) => {
-        //deduct from sender's user balance
-        if (transfer.fromUserId) {
-            await updateBalance(tx, transfer.fromUserId, transfer.amount);
-        }
+        // Add as p2p transfer
+        await p2pTransfer(tx, transfer);
 
-        //deduct from sender merchant's balance
-        if (transfer.fromMerchantId) {
-            await updateBalance(tx, transfer.fromMerchantId, transfer.amount, true);
-        }
-
-        //add to merchant balance
-        if (transfer.toMerchantId) {
-            await addBalance(tx, transfer.toMerchantId, transfer.amount);
-        }
-
-        //update scheduled transfer's next run date
+        // Update scheduled transfer's next run date
         const nextRun = calculateNextRun(transfer.frequency);
 
         await tx.scheduledTransfer.update({
@@ -75,4 +98,4 @@ export const transferExecutor = async (transfer: any) => {
         });
     });
     console.info(`Transfer ID ${transfer.id} completed successfully`);
-}
+};
