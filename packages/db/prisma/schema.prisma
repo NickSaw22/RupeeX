@@ -94,6 +94,14 @@ model scheduledTransfer {
   fromUser       User?          @relation(name: "FromUserScheduledTransfersRelation", fields: [fromUserId], references: [id])
 }
 
+model ScheduledTasksdt {
+  id              Int       @id @default(autoincrement())
+  taskName        String    @unique
+  cronExpression  String
+  isActive        Boolean   @default(true)
+  lastRun         DateTime?
+}
+
 enum Frequency {
   Daily
   Weekly
