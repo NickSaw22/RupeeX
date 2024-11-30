@@ -13,7 +13,6 @@ async function getBalance() {
       merchantId: Number(session?.user?.id),
     },
   });
-  console.log("Balance: " + balance);
   return {
     amount: balance?.amount || 0,
     locked: balance?.locked || 0,
