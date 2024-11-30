@@ -46,6 +46,13 @@ export async function getUserTransactions() {
                         email: true,
                     },
                 },
+                toMerchant: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
             },
             orderBy: {
                 timestamp: "desc",
@@ -61,6 +68,13 @@ export async function getUserTransactions() {
                 amount: true,
                 timestamp: true,
                 fromUser: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                    },
+                },
+                fromMerchant: {
                     select: {
                         id: true,
                         name: true,

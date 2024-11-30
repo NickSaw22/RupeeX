@@ -1,5 +1,5 @@
 import TransactionTable from "../../../components/TransactionTable";
-import { getMerchantTransactions } from "../../../lib/actions/getMerchantTransactions";
+import { getMerchantTransactions } from "../../lib/actions/getMerchantTransactions";
 
 export default async function Transactions() {
   const { onRampTransactions, sentTransfers, receivedTransfers } = await getMerchantTransactions();

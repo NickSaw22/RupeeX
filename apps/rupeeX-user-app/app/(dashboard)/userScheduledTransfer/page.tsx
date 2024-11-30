@@ -4,7 +4,7 @@ import { useReducer, useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { getSession } from 'next-auth/react';
-import createScheduledTransfer from "../../lib/actions/createScheduledTransfer";
+import createUserScheduledTransfer from "../../lib/actions/createUserScheduledTransfer";
 
 const scheduledTransferSchema = z.object({
     recipientType: z.enum(['User', 'Merchant']),
@@ -18,7 +18,7 @@ const scheduledTransferSchema = z.object({
 type ScheduledTransferFormData = z.infer<typeof scheduledTransferSchema>;
 
 const initialState: ScheduledTransferFormData = {
-    recipientType: 'User',
+    recipientType: 'Merchant',
     toUserId: '',
     toMerchantId: '',
     amount: 0,
@@ -54,7 +54,8 @@ const ScheduledTransferForm: React.FC = () => {
             //     },
             //     body: JSON.stringify(validData),
             // });
-            const response = await createScheduledTransfer(validData);
+            console.log(validData);
+            const response = await createUserScheduledTransfer(validData);
             if (response && response.status == "Success") {
                 alert('Transfer scheduled sucessfully');
                 //router.push('/merch-transfers');
@@ -78,14 +79,14 @@ const ScheduledTransferForm: React.FC = () => {
     
     
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-50">
       <form onSubmit={handleSubmit} className="max-w-md w-full bg-white rounded-lg shadow-lg p-6 space-y-6">
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700">Recipient Type</label>
           <select
             value="Merchant"
-            disabled={true}
             onChange={(e) => dispatch({ field: 'recipientType', value: e.target.value })}
+            disabled={true}
             className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-gray-50"
           >
             <option value="User">User</option>
