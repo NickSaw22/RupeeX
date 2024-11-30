@@ -46,20 +46,23 @@ const Sidebar = ({ className } : SidebarProps) => {
           </nav>
         )}
       </div>
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-4 border-t border-gray-700 bg-gray-800 text-white">
         {session?.user ? (
           <>
-            <span className="hidden sm:inline">
-              Welcome, {session.user.name || "User"}
+            <span className="hidden sm:inline text-lg font-semibold text-white">
+              Welcome, <span className="text-blue-400">{session.user.name || "User"}</span>
             </span>
-            <button onClick={() => signOut()} className="w-full bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded">
+            <button
+              onClick={() => signOut()}
+              className="mt-2 w-full bg-red-600 hover:bg-red-500 text-white py-2 px-4 rounded shadow-md transition duration-200 ease-in-out"
+            >
               Logout
             </button>
           </>
         ) : (
           <button
             onClick={() => signIn()}
-            className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
+            className="mt-2 w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-md transition duration-200 ease-in-out"
           >
             Login
           </button>
