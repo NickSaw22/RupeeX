@@ -82,7 +82,7 @@ const addBalance = async (tx: any, merchantId: number, amount: number) => {
 export const transferExecutor = async (transfer: any) => {
     console.log(`Starting execution for transfer ID: ${JSON.stringify(transfer)}`);
 
-    await db.$transaction(async (tx) => {
+    await db.$transaction(async (tx: any) => {
         // Add as p2p transfer
         await p2pTransfer(tx, transfer);
 
