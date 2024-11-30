@@ -15,3 +15,5 @@
 
 4. Generate github workflow for ci cd
 - create .github/workflow/build.yml file
+-To add a build pipeline, we'll create a GitHub Actions workflow that runs whenever a PR is created against the master branch. 
+    The workflow will install dependencies and run the npm run build command to ensure the project builds successfully.
