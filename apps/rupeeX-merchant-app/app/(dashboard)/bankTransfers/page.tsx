@@ -13,7 +13,6 @@ async function getBalance() {
       merchantId: Number(session?.user?.id),
     },
   });
-  console.log("Balance: " + balance);
   return {
     amount: balance?.amount || 0,
     locked: balance?.locked || 0,
@@ -27,7 +26,7 @@ async function getOnRampTransactions() {
       merchantId: Number(session?.user?.id),
     },
   });
-  return txns.map((t) => ({
+  return txns.map((t:any) => ({
     time: t.startTime,
     amount: t.amount,
     status: t.status,

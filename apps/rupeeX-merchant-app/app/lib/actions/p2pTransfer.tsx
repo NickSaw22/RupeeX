@@ -24,7 +24,7 @@ export async function p2pTransfer(to: string, amount: number){
         }
     }
 
-    await prisma.$transaction(async (txn) => {
+    await prisma.$transaction(async (txn: any) => {
         //locking
         await txn.$executeRaw`SELECT * FROM "Balance" WHERE "merchantId" = ${Number(from)} FOR UPDATE`;
 
