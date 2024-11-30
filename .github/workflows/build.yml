@@ -23,5 +23,5 @@ jobs:
               run: npm run db:generate
 
             - name: Run Build
-              run: num run build
+              run: npm run build
             
