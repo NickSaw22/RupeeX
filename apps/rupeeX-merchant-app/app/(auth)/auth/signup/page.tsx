@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createMerchantUser } from "../../../../lib/actions/createMerchantUser";
+import { createMerchantUser } from "../../../lib/actions/createMerchantUser";
 
 export default function Signup() {
   const [form, setForm] = useState({

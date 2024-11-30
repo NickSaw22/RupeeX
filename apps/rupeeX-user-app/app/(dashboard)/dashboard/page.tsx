@@ -44,13 +44,13 @@ export default async function Dashboard() {
                             <p className="text-gray-600 animate-pulse">Loading transactions...</p>
                         )}
                     </Card>
-                    <Card title="Chart 4">
+                    {/* <Card title="Chart 4">
                         {networkData ? (
                             <GenericChart chartType='network' data={networkData} title='Network Chart Transactions' />
                         ) : (
                             <p className="text-gray-600 animate-pulse">Loading transactions...</p>
                         )}
-                    </Card>
+                    </Card> */}
                 </div>
             </div>
         </div>

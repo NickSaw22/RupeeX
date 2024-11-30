@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { updateMerchantUser } from '../lib/actions/updateMerchantUser';
-import { getMerchantDetails } from '../lib/actions/getMerchantDetails';
+import { updateMerchantUser } from '../app/lib/actions/updateMerchantUser';
+import { getMerchantDetails } from '../app/lib/actions/getMerchantDetails';
 
 interface Merchant {
   email: string;

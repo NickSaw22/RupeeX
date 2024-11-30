@@ -6,14 +6,6 @@ import { authOptions } from "../../lib/auth";
 import { getServerSession } from 'next-auth';
 
 
-type ScheduledTransferReq = {
-    recipientType: string,
-    toMerchantId: string,
-    amount: number,
-    frequency: string,
-    isActive: boolean
-}
-
 const scheduledTransferSchema = z.object({
     recipientType: z.enum(['User', 'Merchant']),
     toUserId: z.string().optional(),
@@ -26,7 +18,7 @@ const scheduledTransferSchema = z.object({
 type ScheduledTransferFormData = z.infer<typeof scheduledTransferSchema>;
 
 
-export default async function createScheduledTransfer(request: ScheduledTransferFormData) {
+export default async function createUserScheduledTransfer(request: ScheduledTransferFormData) {
 
     try {
         const session = await getServerSession(authOptions);
@@ -37,27 +29,23 @@ export default async function createScheduledTransfer(request: ScheduledTransfer
             }
         }
         const data = scheduledTransferSchema.parse(request);
-
-        const toMerchantUser = await db.merchant.findUnique({
-            where: {
-                email: data.toMerchantId
-            }
-        })
-        if (!toMerchantUser) {
+        const recipient = data.recipientType === "Merchant" ? await db.merchant.findUnique({ where: { email: data.toMerchantId }}) : await db.merchant.findUnique({ where: { email: data.toUserId}})
+        if (!recipient) {
             return { message: 'User does not exist' };
         }
-
+        console.log("Recipient: ", JSON.stringify(recipient));
         const scheduledTransfer = await db.scheduledTransfer.create({
             data: {
-                fromMerchantId: Number(session?.user?.id),
-                toMerchantId: Number(toMerchantUser?.id),
+                fromUserId: Number(session?.user?.id),
+                toMerchantId: data.recipientType === "Merchant" ? Number(recipient?.id) : null,
                 amount: data.amount,
                 frequency: data.frequency,
                 nextRun: new Date(),
                 status: data.isActive ? 'Active' : 'Paused',
             },
         });
-        return { message: 'Scheduled transfer created successfully!', scheduledTransfer, status: "Success" };
+
+        return { message: 'Scheduled transfer created successfully!', scheduledTransfer, status: "Success" };        
     }
     catch (error) {
         console.log(error)

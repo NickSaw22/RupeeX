@@ -1,9 +1,9 @@
 import React from 'react';
-import { getOnRampTransactions } from '../../../lib/actions/getOnRampTransactions';
+import { getOnRampTransactions } from '../../lib/actions/getOnRampTransactions';
 import { Card } from "@repo/ui/card";
 import GenericChart from '../../../components/GenericChart';
-import { getMerchantTransactions } from '../../../lib/actions/getMerchantTransactions';
-import { p2pTransfersLinked } from '../../../lib/actions/p2pTransfersLinked';
+import { getMerchantTransactions } from '../../lib/actions/getMerchantTransactions';
+import { p2pTransfersLinked } from '../../lib/actions/p2pTransfersLinked';
 import TransactionsLineChart from '../../../components/TransactionsLineChart';
 import { SummaryCard } from '../../../components/SummaryCard';
 
