@@ -15,7 +15,7 @@ class TransferSchedulerService {
       });
 
       await Promise.allSettled(
-        transfers.map((transfer) =>
+        transfers.map((transfer: any) =>
           transferExecutor(transfer).catch((error) => {
             console.error(`Tranfer ID ${transfer.id} failed: `, error);
           })

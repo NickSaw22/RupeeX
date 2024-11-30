@@ -19,7 +19,7 @@ class ReportService {
 
     const reportContent = `
       User Report for ${user.name} (${user.email})
-      Balance: ${user.Balance.map(b => b.amount).reduce((a, b) => a + b, 0)}
+      Balance: ${user.Balance.map((b: any) => b.amount).reduce((a: any, b: any) => a + b, 0)}
       Sent Transfers: ${user.sentTransfers.length}
       Received Transfers: ${user.receivedTransfers.length}
       Scheduled Transfers: ${user.scheduledTransfers.length}
@@ -47,7 +47,7 @@ class ReportService {
 
     const reportContent = `
       Merchant Report for ${merchant.name} (${merchant.email})
-      Balance: ${merchant.merchantBalance.map(b => b.amount).reduce((a, b) => a + b, 0)}
+      Balance: ${merchant.merchantBalance.map((b:any) => b.amount).reduce((a: any, b: any) => a + b, 0)}
       Sent Transfers: ${merchant.p2pSentTransfers.length}
       Received Transfers: ${merchant.p2pReceivedTransfers.length}
       Scheduled Transfers: ${merchant.scheduledTransfersToMerchant.length + merchant.scheduledTransfersFromMerchant.length}
