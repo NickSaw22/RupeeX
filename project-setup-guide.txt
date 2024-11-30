@@ -12,3 +12,6 @@
 - create a user table i.e. model User
 - give the inital migration to get these changes reflected into the db - npx prisma migrate dev --name inital commit
 - npx prisma generate
+
+4. Generate github workflow for ci cd
+- create .github/workflow/build.yml file
