@@ -133,3 +133,4 @@ dist
 # Ignore Turbo and Turbo Femon folders
 .turbo
 .turbo/
+.vercel
