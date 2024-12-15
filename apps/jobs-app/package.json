@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "dist/app.js",
   "scripts": {
-    "build": "tsc",
+    "build": "cd ../.. && cd packages/db && npx prisma generate && cd ../.. && cd apps/jobs-app/ && tsc",
     "start": "node dist/app.js",
     "dev": "ts-node src/app.ts"
   },
@@ -17,6 +17,8 @@
     "@types/node": "^20.11.24",
     "@types/node-cron": "^3.0.11",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*"
   }
 }

@@ -16,6 +16,9 @@ app.get('/', (req, res) => {
 app.get('/ping', (req, res) => {
     res.send('pong 🏓');
 });
+app.get('/test', (req, res) => {
+    res.send('test');
+});
 app.get('/api', (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
