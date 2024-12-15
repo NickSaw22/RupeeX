@@ -7,7 +7,13 @@ const app = express();
 const transferSchedulerService = new TransferSchedulerService();
 
 app.use(express.json());
+app.get('/', (req, res) => {
+  res.send('Express JS on Vercel')
+})
 
+app.get('/ping', (req, res) => {
+  res.send('pong 🏓')
+})
 app.get('/api', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
