@@ -10,7 +10,8 @@
   "dependencies": {
     "@repo/db": "*",
     "express": "^4.21.1",
-    "node-cron": "^3.0.3"
+    "node-cron": "^3.0.3",
+    "esbuild": "^0.20.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
