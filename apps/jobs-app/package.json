@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "main": "dist/app.js",
   "scripts": {
-    "build": "tsc",
+    "build": "cd ../.. && cd packages/db && npx prisma generate && cd ../.. && cd apps/jobs-app/ && tsc",
     "start": "node dist/app.js",
     "dev": "ts-node src/app.ts"
   },
   "dependencies": {
     "@repo/db": "*",
     "express": "^4.21.1",
-    "node-cron": "^3.0.3",
-    "esbuild": "^0.20.2"
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
