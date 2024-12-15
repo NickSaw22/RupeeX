@@ -5,6 +5,13 @@ const app = express();
 
 app.use(express.json())
 
+app.get('/', (req, res) => {
+    res.send('Express JS on Vercel')
+})
+
+app.get('/ping', (req, res) => {
+    res.send('pong 🏓')
+})
 app.post("/hdfcWebhook", async(req, res) => {
     const paymentInformation: {
         token: string;
