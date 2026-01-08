@@ -29584,6 +29584,7 @@ var require_client = __commonJS({
       empty: empty2,
       join: join2,
       raw: raw2,
+      skip: skip2,
       Decimal: Decimal2,
       Debug: Debug2,
       objectEnumValues: objectEnumValues2,
@@ -29598,8 +29599,8 @@ var require_client = __commonJS({
     exports2.Prisma = Prisma;
     exports2.$Enums = {};
     Prisma.prismaVersion = {
-      client: "5.11.0",
-      engine: "efd2449663b3d73d637ea1fd226bafbcf45b3102"
+      client: "5.22.0",
+      engine: "605197351a3c8bdd595af2d2a9bc3025bca48ea2"
     };
     Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError2;
     Prisma.PrismaClientUnknownRequestError = PrismaClientUnknownRequestError2;
@@ -29741,7 +29742,7 @@ var require_client = __commonJS({
           "value": "prisma-client-js"
         },
         "output": {
-          "value": "E:\\RupeeX\\node_modules\\@prisma\\client",
+          "value": "C:\\Users\\Nikhil.Sawant2\\Desktop\\NikhilTraining\\StudyPlan\\GitHUb Projects\\RupeeX\\node_modules\\@prisma\\client",
           "fromEnvVar": null
         },
         "config": {
@@ -29754,15 +29755,16 @@ var require_client = __commonJS({
             "native": true
           }
         ],
-        "previewFeatures": []
+        "previewFeatures": [],
+        "sourceFilePath": "C:\\Users\\Nikhil.Sawant2\\Desktop\\NikhilTraining\\StudyPlan\\GitHUb Projects\\RupeeX\\packages\\db\\prisma\\schema.prisma"
       },
       "relativeEnvPaths": {
         "rootEnvPath": null,
         "schemaEnvPath": "../../../packages/db/.env"
       },
       "relativePath": "../../../packages/db/prisma",
-      "clientVersion": "5.11.0",
-      "engineVersion": "efd2449663b3d73d637ea1fd226bafbcf45b3102",
+      "clientVersion": "5.22.0",
+      "engineVersion": "605197351a3c8bdd595af2d2a9bc3025bca48ea2",
       "datasourceNames": [
         "db"
       ],
@@ -29776,8 +29778,8 @@ var require_client = __commonJS({
           }
         }
       },
-      "inlineSchema": 'generator client {\r\n  provider = "prisma-client-js"\r\n}\r\n\r\ndatasource db {\r\n  provider = "postgresql"\r\n  url      = env("DATABASE_URL")\r\n}\r\n\r\nmodel User {\r\n  id                        Int                   @id @default(autoincrement())\r\n  email                     String?               @unique\r\n  name                      String? \r\n  number                    String                @unique\r\n  password                  String\r\n  OnRampTransaction         OnRampTransaction[]\r\n  Balance                   Balance[]\r\n  sentTransfers             p2pTransfer[]       @relation(name: "FromUserRelation")\r\n  receivedTransfers         p2pTransfer[]       @relation(name: "ToUserRelation")\r\n  scheduledTransfers        scheduledTransfer[]     @relation(name: "FromUserScheduledTransfersRelation")\r\n}\r\n\r\nmodel Merchant  {\r\n  id                        Int                     @id @default(autoincrement())\r\n  email                     String                  @unique\r\n  name                      String?\r\n  password                  String\r\n  phoneNumber               String?         \r\n  businessType              String?         \r\n  businessAddress           String?         \r\n  profilePicture            String?       \r\n  merchantBalance           MerchantBalance[]          \r\n  OnRampTransaction         OnRampTransaction[] \r\n  p2pSentTransfers          p2pTransfer[]           @relation(name: "FromMerchantRelation")\r\n  p2pReceivedTransfers      p2pTransfer[]           @relation(name: "ToMerchantRelation")\r\n  scheduledTransfersToMerchant        scheduledTransfer[]     @relation(name: "ToMerchantScheduledTransfersRelation")\r\n  scheduledTransfersFromMerchant        scheduledTransfer[]     @relation(name: "FromMerchantScheduledTransfersRelation")\r\n}\r\n\r\nmodel OnRampTransaction {\r\n  id        Int          @id @default(autoincrement())\r\n  status    OnRampStatus\r\n  token     String       @unique\r\n  provider  String\r\n  amount    Int\r\n  startTime DateTime\r\n  userId    Int?\r\n  user      User?         @relation(fields: [userId], references: [id])\r\n  merchantId Int?\r\n  merchant Merchant?     @relation(fields: [merchantId], references: [id])\r\n}\r\n\r\nmodel p2pTransfer {\r\n  id                      Int          @id @default(autoincrement())\r\n  amount                  Int\r\n  timestamp               DateTime\r\n  fromUserId              Int?\r\n  fromUser                User?         @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])\r\n  toUserId                Int?\r\n  toUser                  User?         @relation(name: "ToUserRelation", fields: [toUserId], references: [id])\r\n  fromMerchantId          Int?\r\n  fromMerchant            Merchant?    @relation(name: "FromMerchantRelation", fields: [fromMerchantId], references: [id])\r\n  toMerchantId            Int?\r\n  toMerchant              Merchant?    @relation(name: "ToMerchantRelation", fields: [toMerchantId], references: [id])\r\n}\r\n\r\nmodel Balance {\r\n  id     Int  @id @default(autoincrement())\r\n  userId Int  @unique\r\n  amount Int\r\n  locked Int\r\n  user   User @relation(fields: [userId], references: [id])\r\n}\r\n\r\nmodel MerchantBalance {\r\n  id         Int     @id @default(autoincrement())\r\n  merchantId Int     @unique\r\n  amount     Int     \r\n  locked     Int     \r\n  merchant   Merchant @relation(fields: [merchantId], references: [id])\r\n}\r\n\r\nmodel scheduledTransfer {\r\n  id             Int        @id @default(autoincrement())\r\n  fromUserId     Int?\r\n  toMerchantId   Int?\r\n  fromMerchantId Int?    \r\n  amount         Int\r\n  frequency      Frequency\r\n  nextRun        DateTime\r\n  status         TransferStatus\r\n  toMerchant     Merchant?     @relation(name: "ToMerchantScheduledTransfersRelation", fields: [toMerchantId], references: [id])\r\n  fromMerchant     Merchant?     @relation(name: "FromMerchantScheduledTransfersRelation", fields: [fromMerchantId], references: [id])\r\n  fromUser       User?          @relation(name: "FromUserScheduledTransfersRelation", fields: [fromUserId], references: [id])\r\n}\r\n\r\nmodel ScheduledTasksdt {\r\n  id              Int       @id @default(autoincrement())\r\n  taskName        String    @unique\r\n  cronExpression  String\r\n  isActive        Boolean   @default(true)\r\n  lastRun         DateTime?\r\n}\r\n\r\nenum Frequency {\r\n  Daily\r\n  Weekly\r\n  Monthly\r\n  Yearly\r\n}\r\n\r\nenum TransferStatus {\r\n  Active\r\n  Paused\r\n  Completed\r\n}\r\n\r\n\r\nenum OnRampStatus {\r\n  Success\r\n  Failure\r\n  Processing\r\n}',
-      "inlineSchemaHash": "f18c9602341cbfffe90602c009215e73c6b153ca5f6bb61ac1dadd847b7d7237",
+      "inlineSchema": 'generator client {\n  provider = "prisma-client-js"\n}\n\ndatasource db {\n  provider = "postgresql"\n  url      = env("DATABASE_URL")\n}\n\nmodel User {\n  id                 Int                 @id @default(autoincrement())\n  email              String?             @unique\n  name               String?\n  number             String              @unique\n  password           String\n  OnRampTransaction  OnRampTransaction[]\n  Balance            Balance[]\n  sentTransfers      p2pTransfer[]       @relation(name: "FromUserRelation")\n  receivedTransfers  p2pTransfer[]       @relation(name: "ToUserRelation")\n  scheduledTransfers scheduledTransfer[] @relation(name: "FromUserScheduledTransfersRelation")\n}\n\nmodel Merchant {\n  id                             Int                 @id @default(autoincrement())\n  email                          String              @unique\n  name                           String?\n  password                       String\n  phoneNumber                    String?\n  businessType                   String?\n  businessAddress                String?\n  profilePicture                 String?\n  merchantBalance                MerchantBalance[]\n  OnRampTransaction              OnRampTransaction[]\n  p2pSentTransfers               p2pTransfer[]       @relation(name: "FromMerchantRelation")\n  p2pReceivedTransfers           p2pTransfer[]       @relation(name: "ToMerchantRelation")\n  scheduledTransfersToMerchant   scheduledTransfer[] @relation(name: "ToMerchantScheduledTransfersRelation")\n  scheduledTransfersFromMerchant scheduledTransfer[] @relation(name: "FromMerchantScheduledTransfersRelation")\n}\n\nmodel OnRampTransaction {\n  id         Int          @id @default(autoincrement())\n  status     OnRampStatus\n  token      String       @unique\n  provider   String\n  amount     Int\n  startTime  DateTime\n  userId     Int?\n  user       User?        @relation(fields: [userId], references: [id])\n  merchantId Int?\n  merchant   Merchant?    @relation(fields: [merchantId], references: [id])\n}\n\nmodel p2pTransfer {\n  id             Int       @id @default(autoincrement())\n  amount         Int\n  timestamp      DateTime\n  fromUserId     Int?\n  fromUser       User?     @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])\n  toUserId       Int?\n  toUser         User?     @relation(name: "ToUserRelation", fields: [toUserId], references: [id])\n  fromMerchantId Int?\n  fromMerchant   Merchant? @relation(name: "FromMerchantRelation", fields: [fromMerchantId], references: [id])\n  toMerchantId   Int?\n  toMerchant     Merchant? @relation(name: "ToMerchantRelation", fields: [toMerchantId], references: [id])\n}\n\nmodel Balance {\n  id     Int  @id @default(autoincrement())\n  userId Int  @unique\n  amount Int\n  locked Int\n  user   User @relation(fields: [userId], references: [id])\n}\n\nmodel MerchantBalance {\n  id         Int      @id @default(autoincrement())\n  merchantId Int      @unique\n  amount     Int\n  locked     Int\n  merchant   Merchant @relation(fields: [merchantId], references: [id])\n}\n\nmodel scheduledTransfer {\n  id             Int            @id @default(autoincrement())\n  fromUserId     Int?\n  toMerchantId   Int?\n  fromMerchantId Int?\n  amount         Int\n  frequency      Frequency\n  nextRun        DateTime\n  status         TransferStatus\n  toMerchant     Merchant?      @relation(name: "ToMerchantScheduledTransfersRelation", fields: [toMerchantId], references: [id])\n  fromMerchant   Merchant?      @relation(name: "FromMerchantScheduledTransfersRelation", fields: [fromMerchantId], references: [id])\n  fromUser       User?          @relation(name: "FromUserScheduledTransfersRelation", fields: [fromUserId], references: [id])\n}\n\nmodel ScheduledTasksdt {\n  id             Int       @id @default(autoincrement())\n  taskName       String    @unique\n  cronExpression String\n  isActive       Boolean   @default(true)\n  lastRun        DateTime?\n}\n\nenum Frequency {\n  Daily\n  Weekly\n  Monthly\n  Yearly\n}\n\nenum TransferStatus {\n  Active\n  Paused\n  Completed\n}\n\nenum OnRampStatus {\n  Success\n  Failure\n  Processing\n}\n',
+      "inlineSchemaHash": "fa6e074d7161cc8033c835b01b108797d158d1b22a632362d4da66de10a16f61",
       "copyEngine": true
     };
     var fs2 = require("fs");
